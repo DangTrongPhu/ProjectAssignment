@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CRUD Example</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-resource.js"></script>
+	<script type="text/javascript" src="app/app.js"></script>
+<script type="text/javascript" src="app/candidate2.js"></script>
+<style>
+.form-group col-md-3{
+	margin-bottom: 5px;
+
+}
+.required{
+color: red;
+}
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<!--Pulling Awesome Font -->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<style>
+	@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+body {
+  background-color:#fff;
+  -webkit-font-smoothing: antialiased;
+  font: normal 14px Roboto,arial,sans-serif;
+}
+
+.container {
+    padding: 25px;
+    position: fixed;
+}
+
+.form-login {
+    background-color: #EDEDED;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border-color:#d2d2d2;
+    border-width: 5px;
+    box-shadow:0 1px 0 #cfcfcf;
+}
+
+h4 { 
+ border:0 solid #fff; 
+ border-bottom-width:1px;
+ padding-bottom:10px;
+ text-align: center;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.wrapper {
+    text-align: center;
+}
+	
+</style>
+</head>
+<body>
+<div class="container" ng-app="crudApp" ng-controller="Candidate2Controller">
+    <div class="row">
+        <div class="col-md-offset-4 col-md-8">
+            <div class="form-login">
+            <h2><center>Change pass</center></h2>
+            <h3 style="color: red;"><center>{{message}}</center></h3>
+            <input type="text" ng-model="email" class="form-control input-sm chat-input" placeholder="Enter email " />
+            </br>
+            <input type="password" ng-model="pass" class="form-control input-sm chat-input" placeholder="Ente password" />
+            </br>
+             <input type="passwordnew" ng-model="passnew" class="form-control input-sm chat-input" placeholder="Enter password new" />
+            </br>
+            <input type="repasswordnew" ng-model="repassnew" class="form-control input-sm chat-input" placeholder="Enter repassword new " />
+            </br>
+            <div class="wrapper">
+            <span class="group-btn">     
+                <a ng-click="changepassUser(email,pass,passnew,repassnew)" class="btn btn-success btn-md">Changpass <i class="fa fa-sign-in"></i></a>
+            </span>
+            </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

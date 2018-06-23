@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CRUD Example</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-resource.js"></script>
+<script type="text/javascript" src="app/app.js"></script>
+<script type="text/javascript" src="app/candidate2.js"></script>
+<script type="text/javascript" src="app/user.controller.js"></script>
+<script type="text/javascript" src="app/user.service.js"></script>
+<style>
+.form-group col-md-3{
+	margin-bottom: 5px;
+
+}
+.required{
+color: red;
+}
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body ng-app="crudApp" ng-controller="Candidate2Controller">
+	<div class="container" ng-if="roles==1">
+	  <form  name="frmCandidate">
+	  		<h2 class="required">{{state}}</h2>
+	  		<div class="row">
+	  			<div class="form-group col-md-4">
+	  			<label>User:</label>
+			      <select ng-model="candidate.id_user" ng-required="true" class="form-control" name="id_user" id="id_user">
+			      		<option ng-repeat="user in users" value="{{user.id}}">{{user.name}}</option>
+			      </select>
+			      <span ng-show="frmCandidate.id_user.$error.required" class="required">Please selected user</span>
+			    </div>
+			    
+			    <div class="form-group col-md-4">
+			      <label>Full name:</label>
+			      <input type="text" ng-model="candidate.fullname" ng-required="true" class="form-control" id="fullname" name="fullname" placeholder="Please enter Full name">
+			      <span ng-show="frmCandidate.fullname.$error.required" class="required">Please enter Full name</span>
+			    </div>
+			   
+			    <div class="form-group col-md-4">
+			      <label>Gpa:</label>
+			      <input type="text" ng-model="candidate.gpa" ng-required="true" class="form-control" id="gpa" name="gpa" placeholder="Please enter Gpa" name="gpa">
+				   <span ng-show="frmCandidate.gpa.$error.required" class="required">Please enter Gpa</span>			   
+			    </div>
+			   
+		    </div>
+		    
+		    <div class="row">
+		    	 <div class="form-group col-md-4">
+			      <label>Graduation Year:</label>
+			      <input type="number" ng-model="candidate.graduationyear" ng-required="true" class="form-control" id="graduationyear" placeholder="Please enter Graduationyear"  name="graduationyear">
+				  <span ng-show="frmCandidate.graduationyear.$error.required" class="required">Please enter Graduationyear</span>			   			    
+			    </div>
+			    <div class="form-group col-md-4">
+			      <label>Position:</label>
+			      <input type="text" ng-model="candidate.position" ng-required="true" class="form-control" id="position" placeholder="Please enter Position"  name="position">
+				  <span ng-show="frmCandidate.position.$error.required" class="required">Please enter Position</span>			   			    
+			    </div>
+			   
+			    <div class="form-group col-md-4">
+			      <label>University:</label>
+			     <input type="text" ng-model="candidate.university" ng-required="true" class="form-control" id="university" placeholder="Please enter university"  name="university">
+				  <span ng-show="frmCandidate.university.$error.required" class="required">Please enter university</span>			   			    
+			    </div>
+			   
+		    </div>
+		    
+		    <div class="row">
+		     	<div class="form-group col-md-4">
+			      <label>Interview date:</label>
+			     <input type="text" ng-model="candidate.interviewdate" ng-required="true" class="form-control" id="interviewdate" placeholder="Please enter interview date yyyy-MM-dd"  name="interviewdate">
+				  <span ng-show="frmCandidate.interviewdate.$error.required" class="required">Please enter interview date</span>		
+				  <span ng-show="frmCandidate.interviewdate.$error.date" class="required">Invalid date</span>			   			    	   			    
+			    </div>
+			    <div class="form-group col-md-4">
+			      <label>Iq test:</label>
+			    <input type="number" min="0"  ng-model="candidate.iqtest" ng-required="true" class="form-control" id="iqtest" placeholder="Please enter IQ test"  name="iqtest">
+				  <span ng-show="frmCandidate.iqtest.$error.required" class="required">Please enter IQ test</span>			   			    
+			    </div>
+			   
+			    <div class="form-group col-md-4">
+			      <label>Technical test:</label>
+			    <input type="number" min="0" ng-model="candidate.technicaltest" ng-required="true" class="form-control" id="technicaltest" placeholder="Please enter technical test"  name="technicaltest">
+				  <span ng-show="frmCandidate.technicaltest.$error.required" class="required">Please enter technical test</span>			   			    
+			    </div>
+			    
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="form-group col-md-4">
+			      <label>Toeic:</label>
+			     <input type="number" min="0" max="990" ng-model="candidate.toeic" ng-required="true" class="form-control" id="toeic" placeholder="Please enter toeic"  name="toeic">
+				 <span ng-show="frmCandidate.toeic.$error.required" class="required">Please enter toeic</span>			   			    		    
+			    </div>
+			    <div class="form-group col-md-4">
+			      <label>Interview result:</label>
+			     <input type="text" ng-model="candidate.interviewresult" ng-required="true" class="form-control" id="interviewresult" placeholder="Please enter interview result Passed or Failed"  name="interviewresult">
+				  <span ng-show="frmCandidate.interviewresult.$error.required" class="required">Please enter interview result</span>			   			    
+			    </div>
+			   
+			    <div class="form-group col-md-4">
+			      <label>Interview Comments:</label>
+			     <input type="text" ng-model="candidate.interviewcomments"  class="form-control" id="interviewcomments" placeholder="Please enter interview comments"  name="interviewcomments">
+			    </div>
+			   
+		    </div>
+		    
+		    <div class="row">
+		     <div class="form-group col-md-4">
+			      <label>Date of birth:</label>
+			     <input type="text" ng-model="candidate.dayofbirth" ng-required="true" class="form-control" id="dayofbirth" placeholder="Please enter date of birth yyyy-MM-dd"  name="dayofbirth">
+				  <span ng-show="frmCandidate.dayofbirth.$error.required" class="required">Please enter date of birth</span>			   			    
+			   	  <span ng-show="frmCandidate.dayofbirth.$error.date" class="required">Invalid date</span>			   			    	   	
+			    </div>
+			    <div class="form-group col-md-4">
+			      <label>Email:</label>
+			     <input type="email" ng-model="candidate.email" ng-required="true" class="form-control" id="email" placeholder="Please enter email"  name="email">
+				  <span ng-show="frmCandidate.email.$error.required" class="required">Please enter email</span>		
+				   <span ng-show="frmCandidate.email.$error.email" class="required">Invalid email</span>			   			    	   			    
+			    </div>
+			   
+			    <div class="form-group col-md-4">
+			      <label>Phone:</label>
+			     <input type="text" ng-minlength="9" ng-maxlength="12"   ng-model="candidate.phone" ng-required="true" class="form-control" id="phone" placeholder="Please enter phone"  name="phone">
+				  <span ng-show="frmCandidate.phone.$error.required" class="required">Please enter phone</span>		
+				  <span ng-show="frmCandidate.phone.$error.minlength||frmCandidate.phone.$error.maxlength" class="required">Phone numbers must be 9 digits or more</span>			   			    	   			    
+			    
+			    </div>
+			    
+		    </div>
+		    
+		    <div class="row">
+		    	
+			    <div class="form-group col-md-4">
+			      <label>Degree:</label>
+			     <input type="text" ng-model="candidate.degree" ng-required="true" class="form-control" id="degree" placeholder="Please enter degree"  name="degree">
+				  <span ng-show="frmCandidate.degree.$error.required" class="required">Please enter degree</span>			   			    
+			    </div>
+			     <div class="form-group col-md-4">
+			      <label>Address:</label>
+			      <textarea ng-model="candidate.address" ng-required="true" class="form-control" id="address" name="address" placeholder="Enter address" cols="3" rows="5"></textarea>
+			   	  <span ng-show="frmCandidate.address.$error.required" class="required">Please enter address</span>			   			    
+			    </div>
+			    <div class="form-group col-md-4">
+			      <label>Notes:</label>
+			      <textarea  ng-model="candidate.notes" class="form-control" placeholder="Enter notes" cols="3" rows="5"></textarea>
+			    </div>
+			  
+			    
+		    </div>
+		    <button ng-click="saveCandidate(candidate)" type="button" ng-disabled="frmCandidate.$invalid" class={{classButton}}>{{buttonText}}</button>
+		    <button ng-click="updateCandidate(candidate)" class="btn btn-success btn-lg" ng-disabled="btnUpdate">Update</button>
+	  </form>
+	</div>
+
+
+	<div class="container" style="margin-top: 20px;">
+	<div class="row">
+	 <div class="col-md-10">
+		<h2>Table Candidate</h2>
+	 </div>
+	  <div class="col-md-2" style="float: right;">
+		<h3 ng-if="roles==3||roles==1"><a href="/changepass.html">Chang pass</a></h3>
+	 </div>
+	</div>
+		<div class="row">
+		  	<div class="alert alert-success" ng-show="check()">
+			  {{success}}
+			</div>
+			<div class="table-responsive col-md-12">
+				<table class="table table-striped table-responsive" >
+					<tr>
+						<th>Full Name</th>
+						<th>User</th>
+						<th>GPA</th>
+						<th>Graduation Year</th>
+						<th>Position</th>
+						<th>University</th>
+						<th>Interview Date</th>
+						<th>IQ Test</th>
+						<th>Technical Test</th>
+						<th>Toeic</th>
+						<th>Interview Result</th>
+						<th>Interview Comments</th>
+						<th>Day of Birth</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Degree</th>
+						<th>Address</th>
+						<th ng-if="roles==1">Edit</th>
+						<th>Delete</th>
+					</tr>
+					<tr ng-repeat="candidate in candidates">
+						<td>{{candidate.fullname}}</td>
+						<td ng-controller="UserController"><span ng-repeat="user in users" ng-if="candidate.id_user==user.id">{{user.name}}</span></td>
+						<td>{{candidate.gpa}}</td>
+						<td>{{candidate.graduationyear}}</td>
+						<td>{{candidate.position}}</td>
+						<td>{{candidate.university}}</td>
+						<td>{{candidate.interviewdate}}</td>
+						<td>{{candidate.iqtest}}</td>
+						<td>{{candidate.technicaltest}}</td>
+						<td>{{candidate.toeic}}</td>
+						<td>{{candidate.interviewresult}}</td>
+						<td>{{candidate.interviewcomments}}</td>
+						<td>{{candidate.dayofbirth}}</td>
+						<td>{{candidate.email}}</td>
+						<td>{{candidate.phone}}</td>
+						<td>{{candidate.address}}</td>
+						<td>{{candidate.degree}}</td>
+						<td ng-if="roles==1"><button type="button" class="btn btn-success"
+								ng-click="updateFormCandidate(candidate)">
+								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+							</button></td>
+						<td>
+							<button type="button" class="btn btn-danger"
+								ng-click="deleteCandidate(candidate)">
+								<span class="glyphicon glyphicon-remove-circle"
+									aria-hidden="true"></span>
+							</button>
+						</td>
+						</div>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
