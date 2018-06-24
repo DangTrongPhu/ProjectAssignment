@@ -243,20 +243,32 @@ public class CandidateController {
 	public Response filter1(HttpServletRequest request,@RequestParam(value="test",required=false) String test,@RequestParam(value="select",required=false) String select,@RequestParam(value="passed",required=false) String passed,@RequestParam(value="failed",required=false) String failed,@RequestParam(value="end",required=false) String end,@RequestParam(value="start",required=false) String start) {
 		List<Candidate> candidate = new ArrayList<>();
 		try {
-				if(passed.equals("true"))
+				/*if(passed.equals("true"))
 				{
-					candidate= candidateService.vidu("passed","","",""); // sinh viên đậu
-					
-					if(failed.equals("true"))
+					candidate= candidateService.vidu("passed","","","",""); // sinh viên đậu
+					if(!test.equals("undefined"))
 					{
-						candidate = candidateService.findAll();
+						candidate= candidateService.vidu("passed","","","",test);
 					}
-					if(!start.equals("undefined"))
+					else
 					{
-						candidate= candidateService.vidu("passed","",start,end); //đậu + từ ngày đến ngày
 						if(failed.equals("true"))
 						{
-							candidate = candidateService.vidu("passed", "failed", start, end); //đậu +rớt+ từ ngày đến ngày
+							candidate = candidateService.findAll();
+						}
+						if(!start.equals("undefined"))
+						{
+							candidate= candidateService.vidu("passed","",start,end,""); //đậu + từ ngày đến ngày
+							if(!test.equals("undefined"))
+							{
+								candidate= candidateService.vidu("passed","",start,end,test);
+								
+							}
+							if(failed.equals("true"))
+							{
+								candidate = candidateService.vidu("passed", "failed", start, end,""); //đậu +rớt+ từ ngày đến ngày
+							}
+							
 						}
 					}
 				}
@@ -264,14 +276,85 @@ public class CandidateController {
 				{
 					if(failed.equals("true"))
 					{
-						candidate =candidateService.vidu("","failed",start,end);
+						candidate =candidateService.vidu("","failed",start,end,"");
 						if(!start.equals("undefined"))
 						{
-						candidate= candidateService.vidu("","failed",start,end); //đậu + từ ngày đến ngày
+						candidate= candidateService.vidu("","failed",start,end,""); //đậu + từ ngày đến ngày
 						
 					}
 					}
+				}*/
+			if(passed.equals("true"))
+			{
+				candidate= candidateService.vidu("passed","","","",""); // sinh viên đậu
+				if(!start.equals("undefined")&& !test.equals("undefined"))
+				{
+					candidate= candidateService.vidu("passed","",start,end,test);// sinh viên đậu + ngay + test
 				}
+				else
+				{
+					if(!start.equals("undefined"))
+					{
+						candidate= candidateService.vidu("passed","",start,end,"");
+					}
+					else
+					{
+						if(!test.equals("undefined"))
+						{
+							candidate= candidateService.vidu("passed","",start,end,test);
+						}
+					}
+				}
+				
+			}
+			if(failed.equals("true"))
+			{
+				candidate= candidateService.vidu("","failed","","",""); // sinh viên rot
+				if(!start.equals("undefined")&& !test.equals("undefined"))
+				{
+					candidate= candidateService.vidu("","failed",start,end,test);// sinh viên đậu + ngay + test
+				}
+				else
+				{
+					if(!start.equals("undefined"))
+					{
+						candidate= candidateService.vidu("","failed",start,end,"");
+					}
+					else
+					{
+						if(!test.equals("undefined"))
+						{
+							candidate= candidateService.vidu("","failed",start,end,test);
+						}
+					}
+				}
+			}
+			
+			if(failed.equals("true") && passed.equals("true"))
+			{
+				candidate = candidateService.findAll();
+				if(!start.equals("undefined")&& !test.equals("undefined"))
+				{
+					candidate= candidateService.vidu("passed","failed",start,end,test);// sinh viên đậu + ngay + test
+				}
+				else
+				{
+					if(!start.equals("undefined"))
+					{
+						candidate= candidateService.vidu("passed","failed",start,end,"");
+					}
+					else
+					{
+						if(!test.equals("undefined"))
+						{
+							candidate= candidateService.vidu("passed","failed",start,end,test);
+						}
+					}
+				}
+			}
+			
+			
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

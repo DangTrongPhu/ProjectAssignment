@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2018 at 02:20 AM
+-- Generation Time: Jun 24, 2018 at 04:14 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -53,13 +53,13 @@ CREATE TABLE IF NOT EXISTS `candidate` (
 --
 
 INSERT INTO `candidate` (`id`, `id_user`, `fullname`, `gpa`, `graduationyear`, `position`, `university`, `interviewdate`, `iqtest`, `technicaltest`, `toeic`, `interviewresult`, `interviewcomments`, `dayofbirth`, `email`, `phone`, `address`, `degree`, `notes`) VALUES
-(1, 2, 'Trong Phu Dang', 8, 2014, 'Programmer', 'Can Tho University', '2008-06-21', 90, 90, 550, 'Passed', '', '2008-06-21', 'phub1400984@student.ctu.edu.vn', '012779333925', 'Thới Hòa Trà Ôn', 'College', 'tinh anh traoem'),
+(1, 2, 'Trong Phu Dang', 8, 2014, 'Programmer', 'Can Tho University', '2018-06-21', 90, 90, 550, 'Passed', '', '2008-06-21', 'phub1400984@student.ctu.edu.vn', '012779333925', 'Thới Hòa Trà Ôn', 'College', 'tinh anh traoem'),
 (2, 1, 'Van A Tran', 7, 2019, 'Network Administrator', 'University of Science Ho Chi Minh City', '2018-06-21', 100, 80, 500, 'Passed', '', '2008-06-21', 'tinhanhtraoem999@gmail.com', '0941616441', 'Trà Ôn', 'College', 'Không có'),
 (3, 2, 'Thi B Tran', 5.5, 2017, 'tester', 'Vietnam National University, Ho Chi Minh City', '2018-06-15', 35, 45, 990, 'Passed', '', '1999-07-01', 'ttb999@gmail.com', '01210997455', 'Tien Giang', 'Bachalor', 'No'),
 (4, 2, '12', 8.5, 2019, 'Programmer', 'Vietnam National University, Hồ Chí Minh City', '1996-05-02', 12, 12, 12, 'Failed', '12', '1996-05-02', 'phub140098421@student.ctu.edu.vn', '012779333932', '12', '12', '12'),
-(18, 1, '2', 2, 2014, '2', 'Can Tho University', '2008-06-21', 2, 2, 2, 'Failed', '2', '2008-06-21', 'tinhanhtraoem11@gmail.com', '01277933392', '2', '2', '2'),
+(18, 1, '2', 2, 2014, '2', 'Can Tho University', '2018-06-21', 2, 2, 2, 'Failed', '2', '2008-06-21', 'tinhanhtraoem11@gmail.com', '01277933392', '2', '2', '2'),
 (19, 1, '2', 2, 2019, '2', 'University of Science Ho Chi Minh City', '2008-06-21', 2, 2, 2, 'Passed', '2', '2008-06-21', 'tinhanhtraoem1111@gmail.com', '01277933392', '2', '2', '2'),
-(26, 1, 'Dang Van A', 8, 2015, 'tester', 'Can Tho University', '2018-06-17', 90, 90, 850, 'Failed', 't', '1970-01-01', 'tinhanhtrao1111em@gmail.com', '01277933392', 'r', 'College', 'r'),
+(26, 1, 'Dang Van A', 8, 2015, 'tester', 'Caan Tho University', '2018-06-17', 90, 90, 850, 'Failed', 't', '1970-01-01', 'tinhanhtrao1111em@gmail.com', '01277933392', 'r', 'College', 'r'),
 (28, 3, 'Nguyen Van A', 8.5, 2014, 'tester', 'Can Tho University', '1996-06-08', 80, 90, 560, 'Passed', '12', '1996-06-08', 'nhatkhanh@gmail.com', '01277933393', 'vĩnh long', 'College', '11'),
 (29, 3, 'Ho Van A', 8.5, 2014, 'tester', 'Can Tho University', '1996-06-08', 80, 90, 560, 'Passed', NULL, '1996-06-08', 'nhatkhanh1@gmail.com', '01277933393', 'vĩnh long', 'College', NULL);
 

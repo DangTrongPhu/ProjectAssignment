@@ -45,16 +45,20 @@ public class CandidateService {
 	}
 	@PersistenceUnit
 	private EntityManagerFactory emfactory;
-	public List<Candidate> vidu(String passed,String failed,String start,String end ) {
+	public List<Candidate> vidu(String passed,String failed,String start,String end,String test ) {
 	    EntityManager entityManager = emfactory.createEntityManager() ;
 	    String queryString = "select * FROM candidate u";
 	    javax.persistence.Query q = entityManager.createNativeQuery(queryString,Candidate.class);
-	    if(!passed.equals(""))
+	    /*if(!passed.equals(""))
 	    {
 	    	queryString+=" where u.interviewresult ='"+passed+"'";//sinh viên đậu
 	    	if(!start.equals(""))
 	    	{
 	    		queryString+=" and u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'"; // đậu + ngày
+	    		if(!test.equals(""))
+	    		{
+	    			queryString+=" and u.university like '%"+test+"%'";
+	    		}
 	    		if(!failed.equals(""))
 	    		{
 	    			queryString = "select * FROM candidate u where u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'";// đậu rớt từ ngày đến ngày
@@ -69,6 +73,80 @@ public class CandidateService {
 	    	if(!start.equals(""))
 	    	{
 	    		queryString+=" and u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'"; // đậu + ngày
+	    		if(!test.equals(""))
+	    		{
+	    			queryString+=" and u.university like '%"+test+"%'";
+	    		}
+	    	}
+	    	
+	    }*/
+	    if(!passed.equals(""))
+	    {
+	    	queryString+=" where u.interviewresult ='"+passed+"'";//sinh viên đậu
+	    	if(!start.equals("")&& !test.equals(""))
+	    	{
+	    		queryString+=" and u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'and u.university  like '%"+test+"%'"; // đậu + ngày
+	    	}
+	    	else
+	    	{
+	    		if(!start.equals(""))
+	    		{
+	    			queryString+=" and u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'";
+	    		}
+	    		else
+	    		{
+	    			if(!test.equals(""))
+	    			{
+	    				queryString+=" and u.university like '%"+test+"%'";
+	    			}
+	    			
+	    		}
+	    	}
+	    }
+	    if(!failed.equals(""))
+	    {
+	    	queryString+=" where u.interviewresult ='"+failed+"'";//sinh viên rớt
+	    	if(!start.equals("")&& !test.equals(""))
+	    	{
+	    		queryString+=" and u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'and u.university like '%"+test+"%'"; // failed + ngày
+	    	}
+	    	else
+	    	{
+	    		if(!start.equals(""))
+	    		{
+	    			queryString+=" and u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'";
+	    		}
+	    		else
+	    		{
+	    			if(!test.equals(""))
+	    			{
+	    				queryString+=" and u.university like '%"+test+"%'";
+	    			}
+	    			
+	    		}
+	    	}
+	    }
+	    if(!passed.equals("")&& !failed.equals(""))
+	    {
+	    	queryString = "select * FROM candidate u";
+	    	if(!start.equals("")&& !test.equals(""))
+	    	{
+	    		queryString+=" where u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'and u.university like '%"+test+"%'"; // failed + ngày
+	    	}
+	    	else
+	    	{
+	    		if(!start.equals(""))
+	    		{
+	    			queryString+=" where u.interviewdate >='"+start+"' and u.interviewdate<='"+end+"'";
+	    		}
+	    		else
+	    		{
+	    			if(!test.equals(""))
+	    			{
+	    				queryString+=" where u.university like '%"+test+"%'";
+	    			}
+	    			
+	    		}
 	    	}
 	    	
 	    }
