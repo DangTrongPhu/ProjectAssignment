@@ -1,0 +1,89 @@
+package com.example.javawebtutor.action;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.actions.MappingDispatchAction;
+
+import com.example.javawebtutor.form.Admin;
+import com.example.javawebtutor.form.User;
+import com.example.javawebtutor.service.AdminService;
+
+public class AdminAction extends MappingDispatchAction{
+
+	AdminService adminService;
+	public AdminAction() {
+		adminService = new AdminService();
+	}
+	public ActionForward listAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		List<Admin> admins= adminService.getAllAdmin();
+		request.setAttribute("adminsList", admins);
+		return mapping.findForward("listAdmin");
+	}
+	public ActionForward viewAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		int id = Integer.valueOf(request.getParameter("adminId"));
+		
+		Admin admin=adminService.getAdminById(id);
+		request.setAttribute("a", admin);
+		return mapping.findForward("viewAdmin");
+	}
+
+	public ActionForward addAdminPost(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Admin admin = (Admin)form;
+		
+		String ten=request.getParameter("name");
+		if(adminService.getAdminByName(admin.getName())!=null)
+		{
+			admin.addWarning("admin đã tồn tại");
+			return mapping.findForward("failure");
+		}
+		adminService.addAdmin(admin);
+		admin.addWarning("admin thêm thành công");
+		return mapping.findForward("success");
+	}
+	
+	public ActionForward updateAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		int id= Integer.valueOf(request.getParameter("adminId"));
+		Admin admin = adminService.getAdminById(id);
+		request.setAttribute("admin", admin);
+		return mapping.findForward("updateAdmin");
+	}
+	public ActionForward updateAdminPost(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Admin admin = (Admin)form;
+		
+		if(adminService.updateAdmin(admin))
+		{
+			return mapping.findForward("success");
+		}
+		return mapping.findForward("failed");
+
+	}
+	public ActionForward deleteAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		int id= Integer.valueOf(request.getParameter("adminId"));
+		Admin admin = (Admin)form;
+		if(adminService.getAdminById(id)==null)
+		{
+			admin.addWarning("admin không tồn tại");
+			return mapping.findForward("success");
+		}
+		if(adminService.deleteAdmin(id))
+		{
+			admin.addWarning("admin xóa thành công");
+			return mapping.findForward("success");
+		}
+		return mapping.findForward("failed");
+	}
+}
