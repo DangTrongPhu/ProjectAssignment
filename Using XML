@@ -1,0 +1,41 @@
+Struts 2 Validation Using XML
+Tạo file có tên là : ActionClass-Validation.xml
+Ví dụ: Login-Validation.xml
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+"http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+    <field name="userName">
+        <field-validator type="requiredstring">
+        	<message>User Name is required.</message>
+        </field-validator>
+    </field>
+    <field name="password">
+        <field-validator type="requiredstring">
+        	<message key="password.required" />
+        </field-validator>
+    </field>
+</validators>
+
+Trong  view <s:head />
+II action
+Có 3 loại
+ForwardAction
+Chuyển hướng view ở backend 
+<action-mappings>
+	
+		<action
+			path="/Welcome"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="/pages/Welcome.jsp"/>
+		
+	</action-mappings>
+
+
+DispatchAction
+<action-mappings>
+    <action input="/index.jsp" parameter="method" name="UserForm" path="/UserAction" scope="session" type="com.vaannila.UserAction">
+        <forward name="success" path="/index.jsp" />
+    </action>
+</action-mappings>
+UserAction.do?method=add
