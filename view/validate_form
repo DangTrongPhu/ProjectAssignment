@@ -1,0 +1,34 @@
+function validate(form)
+	{
+		var name = document.getElementById("a").value;
+		var country = document.getElementById('country'); 
+		if(name.length==0||name=="undefined")
+		{
+			alert("Please enter input name!");
+			return false;
+		}
+		if ( (form.gender[0].checked == false ) && (form.gender[1].checked == false ) ) 
+		{
+			alert ( "Please choose your Gender: Male or Female" ); 
+			return false;
+		}
+		if (country.length==0||country=="undefined"||country.value=="") {
+			alert ( "Please select your country" ); 
+			return false;
+			}
+			
+		
+		return true;
+	}
+  
+  <s:form action="saveOrUpdateUser">
+      <s:hidden name="id" />
+      <s:textfield name="name" id="a" label="User Name" value="%{user.name}" />
+      <s:radio name="gender" label="Gender" list="#{'0':'Male', '1':'Female'}"  value="%{user.gender}" id="gender"/>
+      <s:select name="country" list="#{'Ha Noi':'Ha Noi','Vung Tau':'Vung Tau','Viet Nam':'Viet Nam'}" headerKey=""
+        headerValue="Select" label="Select a country" value="%{user.country}" id="country"/>
+      <s:textarea name="aboutYou" label="About You" value="%{user.aboutYou}" id="aboutYou" />
+      <s:checkbox name="mailingList"
+        label="Would you like to join our mailing list?" value="%{user.mailingList}"/>
+      <s:submit onclick="return validate(this.form);" />
+  </s:form>
