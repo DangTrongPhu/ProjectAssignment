@@ -1,0 +1,60 @@
+Struts 1 Form validation using ActionForm’s validate() method
+
+Trong Form
+public ActionErrors validate(ActionMapping mapping,
+            HttpServletRequest request) {
+        ActionErrors errors = new ActionErrors();
+ 
+        if (userId == null || userId.length() == 0) {
+            errors.add("userId", new ActionMessage("userId.not.entered"));
+        }
+        if (password == null || password.length() == 0) {
+            errors.add("password", new ActionMessage("password.not.entered"));
+        }
+ 
+        return errors;
+    }
+
+Tạo file ApplicationResources.properties
+<html:form action="helloWorld.do">
+        <table>
+            <tr>
+                <td>UserId:</td>
+                <td><html:text property="userId"></html:text></td>
+                <td><html:errors property="userId" /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><html:text property="password"></html:text></td>
+                <td><html:errors property="password" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <html:submit value="Submit" />
+                </td>
+            </tr>
+        </table>
+    </html:form>
+
+<message-resources parameter="com/topjavatutorial/app/ApplicationResources" />
+
+Struts 2
+1.	Trong view  thêm thẻ <s:head />
+2.	Trong struts.xml 
+
+<action name="Login" class="vaannila.Login">
+            <result name="input">/login.jsp</result>
+        </action>
+3.	Trong  Bean
+
+public void validate() {
+        if (getUserName().length() == 0) {
+            addFieldError("userName", "User Name is required");
+        } else if (!getUserName().equals("Eswar")) {
+            addFieldError("userName", "Invalid User");
+        }
+        if (getPassword().length() == 0) {
+            addFieldError("password", getText("password.required"));
+        }
+    }
+
