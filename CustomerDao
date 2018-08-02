@@ -1,0 +1,308 @@
+package com.trongphu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.trongphu.connect.DBUtils;
+import com.trongphu.connect.JDBCConnection;
+import com.trongphu.model.Customer;
+
+
+
+
+
+public class CustomerDao {
+		// Lay danh sach customer tu vi tri first den last
+		public List<Customer> getAllCustomer(int first,int last)
+		{
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = {String.valueOf(first),String.valueOf(last) };
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			List<Customer> customers= new ArrayList<>();
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("SELECT *");
+				sql.append(" FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY CUSTOMER_ID) as row FROM mstcustomer) a ");
+				sql.append("where row >= ? and row <= ? ");
+				
+				rs = DBUtils.executeQuery(conn, sql, params, stmt);
+				while (rs.next()) {
+					Customer customer = new Customer();
+					customer.setCustomer_id(rs.getInt("CUSTOMER_ID"));
+					customer.setCustomer_name(rs.getString("CUSTOMER_NAME"));
+					customer.setSex(rs.getString("SEX"));
+					customer.setBirthday(rs.getString("BIRTHDAY"));
+					customer.setEmail(rs.getString("EMAIL"));
+					customer.setAddress(rs.getString("ADDRESS"));
+					customer.setDelete_ymd(rs.getDate("DELETE_YMD"));
+					customer.setInsert_ymd(rs.getDate("INSERT_YMD"));
+					customer.setInsert_psn_cd(rs.getInt("INSERT_PSN_CD"));
+					customer.setUpdate_ymd(rs.getDate("UPDATE_YMD"));
+					customer.setUpdate_psn_cd(rs.getInt("UPDATE_PSN_CD"));
+					
+					customers.add(customer);
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return customers;
+		}
+		public Customer getCustomerById(String customer_id) throws SQLException
+		{
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = { customer_id };
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("SELECT ");
+				sql.append("		* ");
+				sql.append("FROM 	MSTCUSTOMER ");
+				sql.append("WHERE 	customer_id= ? ");
+				
+				rs = DBUtils.executeQuery(conn, sql, params, stmt);
+				while (rs.next()) {
+					Customer customer = new Customer();
+					customer.setCustomer_id(rs.getInt("CUSTOMER_ID"));
+					customer.setCustomer_name(rs.getString("CUSTOMER_NAME"));
+					customer.setSex(rs.getString("SEX"));
+					customer.setBirthday(rs.getString("BIRTHDAY"));
+					customer.setEmail(rs.getString("EMAIL"));
+					customer.setAddress(rs.getString("ADDRESS"));
+					customer.setDelete_ymd(rs.getDate("DELETE_YMD"));
+					customer.setInsert_ymd(rs.getDate("INSERT_YMD"));
+					customer.setInsert_psn_cd(rs.getInt("INSERT_PSN_CD"));
+					customer.setUpdate_ymd(rs.getDate("UPDATE_YMD"));
+					customer.setUpdate_psn_cd(rs.getInt("UPDATE_PSN_CD"));
+					
+					return customer;
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				JDBCConnection.closeConnection(conn, rs, stmt);
+			}
+			return null;
+		}
+		public boolean addCustomer(Customer customer)
+		{
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = {customer.getCustomer_name(),
+								customer.getSex(),customer.getBirthday(),
+								customer.getEmail(),customer.getAddress(),
+								String.valueOf(customer.getInsert_ymd()),
+								String.valueOf(customer.getInsert_psn_cd()),
+								String.valueOf(customer.getUpdate_ymd()),
+								String.valueOf(customer.getUpdate_psn_cd())};
+			PreparedStatement stmt = null;
+			int rs;
+			
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("Insert into ");
+				sql.append("MSTCUSTOMER	");
+				sql.append("(CUSTOMER_NAME,SEX,BIRTHDAY,EMAIL,ADDRESS,INSERT_YMD,INSERT_PSN_CD,UPDATE_YMD,UPDATE_PSN_CD) ");
+				sql.append("values(?,?,?,?,?,?,?,?,?)");
+
+				rs = DBUtils.executeNoneQuery(conn, sql, params, stmt);
+				if(rs>0)
+				{
+					return true;
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		
+		
+		public boolean updateCustomer(Customer customer)
+		{
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = {customer.getCustomer_name(),
+								customer.getSex(),
+								customer.getBirthday(),
+								customer.getEmail(),
+								customer.getAddress(),
+								String.valueOf(customer.getUpdate_ymd()),
+								String.valueOf(customer.getUpdate_psn_cd()),
+								String.valueOf(customer.getCustomer_id())};
+			PreparedStatement stmt = null;
+			int rs;
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("UPDATE ");
+				sql.append("MSTCUSTOMER SET ");
+				sql.append("CUSTOMER_NAME = ?,  SEX=? , BIRTHDAY=?, ");
+				sql.append("EMAIL= ? , ADDRESS = ?, UPDATE_YMD=?, UPDATE_PSN_CD=? ");
+				sql.append("WHERE CUSTOMER_ID=? ");
+				rs = DBUtils.executeNoneQuery(conn, sql, params, stmt);
+				if(rs>0)
+				{
+					return true;
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		
+		// Tong so record cua table customer 
+		public int countCustomer()
+		{
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = {};
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			int count = 0;
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("SELECT ");
+				sql.append(" count(*) as 'soluong' ");
+				sql.append("FROM  MSTCUSTOMER ");
+				
+				rs = DBUtils.executeQuery(conn, sql, params, stmt);
+				while (rs.next()) {
+					count=rs.getInt("soluong");
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return count;
+		}
+		// lấy danh sách phần tử khi tìm kiếm
+		public List<Customer> searchCustomer(String birthdayFrom,String birthdayTo,String customerName,String sex,int firstResult, int maxResult)
+		{
+			List<Customer> customers= new ArrayList<>();
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = {birthdayFrom,birthdayTo,String.valueOf(firstResult),String.valueOf(maxResult)};
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("SELECT * ");
+				sql.append("FROM ");
+				sql.append("(SELECT *, ROW_NUMBER() OVER (ORDER BY CUSTOMER_ID) as row  ");
+				sql.append("FROM MSTCUSTOMER ");
+				sql.append("where BIRTHDAY>=? and BIRTHDAY<=?");
+				if(customerName!=null&&!customerName.equals("")&&customerName.length()>0)
+				{
+					sql.append(" and CUSTOMER_NAME like '%"+customerName+"%' ");
+				}
+				if(sex!=null&&!sex.equals("")&&sex.length()>0)
+				{
+					params =new String[] {birthdayFrom,birthdayTo,sex,String.valueOf(firstResult),String.valueOf(maxResult)};
+					sql.append(" and SEX = ? ");
+
+				}
+				sql.append(" ) a where row >= ? and row <= ?");
+				rs = DBUtils.executeQuery(conn, sql, params, stmt);
+				while (rs.next()) {
+					Customer customer = new Customer();
+					customer.setCustomer_id(rs.getInt("CUSTOMER_ID"));
+					customer.setCustomer_name(rs.getString("CUSTOMER_NAME"));
+					customer.setSex(rs.getString("SEX"));
+					customer.setBirthday(rs.getString("BIRTHDAY"));
+					customer.setEmail(rs.getString("EMAIL"));
+					customer.setAddress(rs.getString("ADDRESS"));
+					customer.setDelete_ymd(rs.getDate("DELETE_YMD"));
+					customer.setInsert_ymd(rs.getDate("INSERT_YMD"));
+					customer.setInsert_psn_cd(rs.getInt("INSERT_PSN_CD"));
+					customer.setUpdate_ymd(rs.getDate("UPDATE_YMD"));
+					customer.setUpdate_psn_cd(rs.getInt("UPDATE_PSN_CD"));
+					
+					customers.add(customer);
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return customers;
+		}
+		// lấy số lượng phần tử khi tìm kiếm
+		public int getCustomerBySearch(String birthdayFrom,String birthdayTo,String customerName,String sex)
+		{
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = {birthdayFrom,birthdayTo};
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			int count=0;
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("SELECT count(*) as 'soluong' ");
+				sql.append("FROM MSTCUSTOMER ");
+				sql.append("where BIRTHDAY>=? and BIRTHDAY<=?");
+				if(customerName!=null&&!customerName.equals("")&&customerName.length()>0)
+				{
+					sql.append(" and CUSTOMER_NAME like '%"+customerName+"%' ");
+				}
+				if(sex!=null&&!sex.equals("")&&sex.length()>0)
+				{
+					params =new String[] {birthdayFrom,birthdayTo,sex};
+					sql.append(" and SEX = ? ");
+
+				}
+				rs = DBUtils.executeQuery(conn, sql, params, stmt);
+				while (rs.next()) {
+					count=rs.getInt("soluong");
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			return count;
+		}
+		// Xoa customer
+		public int deleteCustomer(int customer_id) {
+			Connection conn = null;
+			StringBuffer sql = new StringBuffer();
+			String[] params = { String.valueOf(customer_id) };
+			PreparedStatement stmt = null;			
+			int rs=0;
+
+			try {
+				conn = JDBCConnection.get_JDBCConnection();
+				sql.append("UPDATE  ");
+				sql.append("MSTCUSTOMER SET ");
+				sql.append("DELETE_YMD = GETDATE() ");
+				sql.append("WHERE CUSTOMER_ID=? ");
+				rs = DBUtils.executeNoneQuery(conn, sql, params, stmt);
+				if(rs>0)
+				{
+					return rs;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return rs;
+		}
+		
+		
+		//Kiem tra da dang nhap chua
+		public boolean checkLogin()
+		{
+			HttpSession session=ServletActionContext.getRequest().getSession(true);  
+			
+			if(session.getAttribute("user")==null)
+			{
+				return false;
+			}
+			return true;
+		}
+}
