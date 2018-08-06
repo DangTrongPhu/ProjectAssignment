@@ -1,0 +1,75 @@
+package com.trongphu;
+
+import java.util.Map;
+
+
+import org.apache.struts2.dispatcher.SessionMap;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.trongphu.dao.LoginDao;
+import com.trongphu.dao.UserDao;
+import com.trongphu.model.User;
+
+public class LoginAction extends ActionSupport implements SessionAware{
+	private static final long serialVersionUID = 810944870934099320L;
+	private String userid,password; 
+	LoginDao loginDao = new LoginDao();
+	UserDao userDao = new UserDao();
+	private SessionMap<String, Object> sessionMap;
+	
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	@Override
+	public void setSession(Map<String, Object> map) {
+		sessionMap = (SessionMap<String, Object>) map;
+	}
+
+	// validate dữ liệu nhập vào 
+	public void validate() {
+        if (getUserid()==null||getUserid().equals("")) {
+        	this.addActionError(getText("userid.vali"));
+        } 
+        if (getPassword()==null||getPassword().equals("")){
+        	this.addActionError(getText("password.vali"));
+        }
+    }
+	
+	
+
+	@Override
+	public String execute() throws Exception { 
+
+	    if(loginDao.loginUser(userid, password)>0)
+	    {  
+	    	User action = userDao.getUserByUserID(userid);
+	    	sessionMap.put("user",action);
+	        return "success";  
+	    }  
+	    else 
+	    {
+	    	//Luc nguoi dung dang nhap sai thì trả về trang login
+	    	if(userid!=null)
+	    	{
+	    		this.addActionError(getText("error.vali"));
+	    	}
+	    	
+	        return "error";  
+	    }  
+	} 
+	
+	
+
+}
