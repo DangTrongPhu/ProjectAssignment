@@ -1,0 +1,50 @@
+package com.trongphu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import com.trongphu.connect.DBUtils;
+import com.trongphu.connect.JDBCConnection;
+import com.trongphu.model.User;
+
+
+
+public class UserDao {
+
+	//ham lay user by id
+	public User getUserByUserID(String userid)
+	{
+		Connection conn = null;
+		StringBuffer sql = new StringBuffer();
+		String[] params = { userid};
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = JDBCConnection.get_JDBCConnection();
+			sql.append("SELECT ");
+			sql.append("		* ");
+			sql.append("FROM MSTUSER ");
+			sql.append("WHERE 	USERID= ? ");
+			rs = DBUtils.executeQuery(conn, sql, params, stmt);
+			while (rs.next()) {
+				User user = new User();
+				user.setPsn_cd(rs.getInt("PSN_CD"));
+				user.setUserid(rs.getString("USERID"));
+				user.setUsername(rs.getString("USERNAME"));
+				user.setDelete_ymd(rs.getDate("DELETE_YMD"));
+				user.setInsert_ymd(rs.getDate("INSERT_YMD"));
+				user.setInsert_psn_cd(rs.getInt("INSERT_PSN_CD"));
+				user.setUpdate_ymd(rs.getDate("UPDATE_YMD"));
+				user.setUpdate_psn_cd(rs.getInt("UPDATE_PSN_CD"));
+				return user;
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+}
