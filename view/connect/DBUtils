@@ -1,0 +1,51 @@
+package com.trongphu.connect;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
+public class DBUtils {
+
+	public static ResultSet executeQuery(Connection conn, StringBuffer sql,
+			Object[] params, PreparedStatement stmt) throws SQLException {
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement(sql.toString());
+			fillStatement(stmt, params);
+			rs = stmt.executeQuery();			
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return rs;
+	}
+	
+	public static int executeNoneQuery(Connection conn, StringBuffer sql, 
+			Object[] params, PreparedStatement stmt) throws SQLException {
+		int rows = 0;
+		try {
+			stmt = conn.prepareStatement(sql.toString());
+			fillStatement(stmt, params);
+			rows = stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return rows;
+	}
+	
+	private static void fillStatement(PreparedStatement stmt, Object[] params)
+			throws SQLException {
+		if (params == null) {
+			return;
+		}
+
+		for (int i = 0; i < params.length; i++) {
+			if (params[i] != null) {
+				stmt.setObject(i + 1, params[i]);
+			} else {
+				stmt.setNull(i + 1, Types.NULL);
+			}
+		}
+	}
+}
