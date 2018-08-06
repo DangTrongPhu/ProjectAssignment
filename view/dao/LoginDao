@@ -1,0 +1,43 @@
+package com.trongphu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import com.trongphu.connect.DBUtils;
+import com.trongphu.connect.JDBCConnection;
+
+public class LoginDao {
+
+	// ham login user
+	public int loginUser(String userid,String password)
+	{
+		Connection conn = null;
+		StringBuffer sql = new StringBuffer();
+		String[] params = { userid,password };
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = JDBCConnection.get_JDBCConnection();
+			sql.append("Select count(*) as CNT ");
+			sql.append("FROM MSTUSER ");
+			sql.append("where USERID = ? and PASSWORD= ? and DELETE_YMD is null ");
+			
+			rs = DBUtils.executeQuery(conn, sql, params, stmt);
+			while (rs.next()) {
+				int n= rs.getInt("CNT");
+				// Neu n >0 tuc ton tai user co userid va password hop le
+				if(n>0)
+				{
+					return n;
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+		
+	}
+	
+}
